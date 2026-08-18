@@ -1,0 +1,2 @@
+PRINTER_NAME = 'Argox OS-214plus U PPLA'
+
