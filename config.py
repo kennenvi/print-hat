@@ -1,2 +1,2 @@
-PRINTER_NAME = 'Argox OS-214plus U PPLA'
+PRINTER_NAME = 'ARGOX_OS-214_plus_PPLA_203dpi'
 
