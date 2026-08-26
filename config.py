@@ -1,0 +1,2 @@
+PRINTER_NAME = 'ARGOX_OS-214_plus_PPLA_203dpi'
+
