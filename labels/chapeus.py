@@ -4,10 +4,10 @@ from typing import TypeVar
 from dataclasses import dataclass
 
 from ppla import PPLAItem
-from utils import remove_acentos
+from labels.utils import remove_acentos
 
 
-LEFT_MARGIN = 15
+LEFT_MARGIN = 10
 BOTTOM_MARGIN = 5
 HEIGHT=115 # Altura da etiqueta em dots
 LENGTH=165 # Largura de uma célula
@@ -35,7 +35,7 @@ class Label:
 ppla_cor_partial = partial(PPLAItemChapeu, x_axis=LEFT_MARGIN, y_axis=BOTTOM_MARGIN)
 ppla_tamanho_partial = partial(PPLAItemChapeu, x_axis=LEFT_MARGIN, y_axis=97)
 ppla_aba_partial = partial(PPLAItemChapeu, x_axis=141, y_axis=BOTTOM_MARGIN)
-ppla_lote_partial = partial(PPLAItemChapeu, x_axis=135, y_axis=97)
+ppla_lote_partial = partial(PPLAItemChapeu, x_axis=125, y_axis=97)
 ppla_qtd_partial = partial(PPLAItemChapeu, x_axis=66, y_axis=50)
 
 class PPLALabelChapeu:

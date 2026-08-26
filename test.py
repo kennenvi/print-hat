@@ -1,5 +1,6 @@
 import subprocess
 from ppla import PPLAItem, PPLARenderer
+from labels.chapeus import Label, PPLALabelChapeu
 
 
 def imprimir_ppla(dados: bytes, impressora: str = "ARGOX_OS-214_plus_PPLA_203dpi") -> None:
@@ -41,6 +42,23 @@ tamanho_2 = PPLAItem(x_axis=adjust_x_axix(LEFT_MARGIN), y_axis=97, text='GG', al
 aba_2 = PPLAItem(x_axis=adjust_x_axix(141), y_axis=BOTTOM_MARGIN, text='A10', alignment=1, font=3)
 lote_2 = PPLAItem(x_axis=adjust_x_axix(135), y_axis=97, text='1427', alignment=1, font=3)
 qtd_2 = PPLAItem(x_axis=adjust_x_axix(66), y_axis=50, text='250 un', alignment=1, font=3)
+
+# label1 = Label(
+#     cor='Preto', 
+#     tamanho='GG',
+#     aba='A10',
+#     lote='1423',
+#     qtd='120'
+# )
+# label2 = Label(
+#     cor='Preto', 
+#     tamanho='GG',
+#     aba='A10',
+#     lote='1423',
+#     qtd='120'
+# )
+# label2 = None 
+# label_chapeu = PPLALabelChapeu(label1, label2)
 
 # itens = [cor, tamanho, aba, lote, qtd, cor_2, tamanho_2, aba_2, lote_2, qtd_2]
 from labels.chapeus import label_chapeu
