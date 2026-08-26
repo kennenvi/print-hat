@@ -1,10 +1,10 @@
 import subprocess
-import os
+import platform
 from ppla import PPLARenderer
 
 
 DEFAULT_PRINTER = "ARGOX_OS-214_plus_PPLA_203dpi"
-system_os = os.name
+platform_os = platform.system()
 
 
 class PrinterService():
@@ -16,10 +16,10 @@ class PrinterService():
 
     @staticmethod
     def send_to_printer(data: bytes, printer: str = DEFAULT_PRINTER) -> None:
-        if system_os == 'posix':
+        if platform_os == 'Linux':
             PrinterService.send_to_printer_posix(data, printer)
             return
-        if system_os == 'nt':
+        if platform_os == 'Windows':
             PrinterService.send_to_printer_win(data, printer)
             return
         raise NotImplementedError('Não existem método de imperssão para outros OS')
