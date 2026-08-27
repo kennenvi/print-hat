@@ -6,7 +6,7 @@ from copy import deepcopy
 
 class PrintHatService():
     @staticmethod
-    def print_labels(cor, tamanho, aba, lote, qtd, qtd_pilha) -> None:
+    def print_labels(cor, tamanho, aba, lote, qtd, qtd_pilha, printer) -> None:
         label = Label(cor, tamanho, aba, lote, qtd)
         labels, label_mod = PrintHatService.calculate_mods(label, qtd_pilha)
         print(len(labels))
@@ -14,7 +14,7 @@ class PrintHatService():
         res_labels = PrintHatService._verify_mod(label_mod, label)
         labels.extend(res_labels)
 
-        PrinterService.print_labels(labels)
+        PrinterService.print_labels(labels, printer)
 
     @staticmethod
     def calculate_mods(label, qtd_pilha) -> tuple[list[PPLALabelChapeu], int]:
