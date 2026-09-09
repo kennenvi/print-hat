@@ -11,6 +11,9 @@ class PrinterService():
 
     @staticmethod
     def print_labels(labels, printer: str | None = None):
+        print('labesl', labels)
+        for label in labels:
+            print(label)
         for label in PrinterService.render_labels(labels):
             PrinterService.send_to_printer(label, printer or DEFAULT_PRINTER)
 

@@ -1,69 +1,62 @@
 from labels.chapeus import Label, PPLALabelChapeu
 from printer_service import PrinterService
 from copy import deepcopy
-
+from itertools import zip_longest
 
 
 class PrintHatService():
     @staticmethod
-    def print_labels(cor, tamanho, aba, lote, qtd, qtd_pilha, printer) -> None:
-        label = Label(cor, tamanho, aba, lote, qtd)
-        labels, label_mod = PrintHatService.calculate_mods(label, qtd_pilha)
-        print(len(labels))
+    def print_labels(labels: list, qtd_pilha, printer) -> None:
+        labels_label = [Label(*label) for label in labels]
+        organized_labels = PrintHatService._organize_labels(labels_label)
+        print('org', organized_labels)
+        ppla_items = PrintHatService._build_ppla_items(organized_labels)
+        print('ppla_items len', len(ppla_items))
+        print('ppla_items', ppla_items)
 
-        res_labels = PrintHatService._verify_mod(label_mod, label)
-        labels.extend(res_labels)
-
-        PrinterService.print_labels(labels, printer)
+        PrinterService.print_labels(ppla_items, printer)
 
     @staticmethod
-    def calculate_mods(label, qtd_pilha) -> tuple[list[PPLALabelChapeu], int]:
+    def calculate_mods(cor, tamanho, aba, lote, qtd, qtd_pilha) -> list[Label]:
+        label = Label(cor, tamanho, aba, lote, qtd)
+        qtd_pilha = int(qtd_pilha)
         qtd = int(label.qtd)
         qtd_pilha = int(qtd_pilha)
         print(f'qtd inicial == {qtd}')
-        label.qtd = qtd_pilha
+        label.qtd = str(qtd_pilha)
         print(f'qtd inicial == {qtd}')
 
-        label_mod = qtd % qtd_pilha
-        qtd_label_10 = qtd - label_mod
+        quocient, reminder = divmod(qtd, qtd_pilha)
+        print('quociente', quocient)
+        print('reminder', reminder)
 
-        print(f'qtd_label_10 == {qtd_label_10}')
-        print(f'label_mod == {label_mod}')
+        labels: list[Label] = []
+        for _ in range(quocient):
+            labels.append(label)
+        if reminder:
+            reminder_label = deepcopy(label)
+            reminder_label.qtd = str(reminder)
+            labels.append(reminder_label)
 
-        labels = []
-        for _ in range(qtd_label_10 // 2):
-            labels.append(PPLALabelChapeu(label1=label, label2=label))
-        if qtd_label_10 % 2 != 0:
-            labels.append(PPLALabelChapeu(label1=label))
-
-        return labels, label_mod
+        return labels 
 
     @staticmethod
-    def _verify_mod(qtd_labels: int, label: Label) -> list[PPLALabelChapeu]:
-        label_mod = qtd_labels % 2
-        label_for_rest = deepcopy(label)
-        label_for_rest.qtd = str(qtd_labels)
-        print('=================')
-        print(f'label_mod == {label_mod}')
-        if qtd_labels == 1:
-            print('qtd_labels == 1')
-            labels = [PPLALabelChapeu(label1=label_for_rest)]
-        elif qtd_labels == 2:
-            print('qtd_labels == 2')
-            labels = [PPLALabelChapeu(label1=label_for_rest, label2=label_for_rest)]
-        else:
-            print('entrou no else')
-            labels = [
-                PPLALabelChapeu(label1=label_for_rest, label2=label_for_rest)
-                for _ in range(qtd_labels // 2)
-            ]
-            if label_mod != 0:
-                print('Entrou no adicional')
-                labels.append(PPLALabelChapeu(label1=label_for_rest))
-        print(f'len2 == {len(labels)}')
-        return labels
+    def _organize_labels(labels, n=2, fillment=None) -> list[tuple]:
+        args = [iter(labels)] * n
+        return [tuple(grupo) for grupo in zip_longest(*args, fillvalue=fillment)]
+
+    @staticmethod
+    def _build_ppla_items(labels: list[tuple]):
+        return [PPLALabelChapeu(label1, label2) for label1, label2 in labels]
 
 
 if __name__ == '__main__':
-    label = Label(cor='1', tamanho='1', aba='1', lote='1', qtd='12')
-    PrintHatService.print_labels(label)
+    cor='1'
+    tamanho='1'
+    aba='1'
+    lote='1'
+    qtd='12'
+    labels = [cor, tamanho, aba, lote, qtd]
+    qtd_pilha='10'
+    printer='ARGOX_OS-214_plus_PPLA_203dpi'
+    PrintHatService.print_labels(labels, qtd_pilha, printer)
