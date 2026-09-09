@@ -7,7 +7,7 @@ from ppla import PPLAItem
 from labels.utils import remove_acentos
 
 
-LEFT_MARGIN = 10
+LEFT_MARGIN = 5
 BOTTOM_MARGIN = 5
 HEIGHT=115 # Altura da etiqueta em dots
 LENGTH=165 # Largura de uma célula
@@ -34,7 +34,7 @@ class Label:
 # Labels
 ppla_cor_partial = partial(PPLAItemChapeu, x_axis=LEFT_MARGIN, y_axis=BOTTOM_MARGIN)
 ppla_tamanho_partial = partial(PPLAItemChapeu, x_axis=LEFT_MARGIN, y_axis=97)
-ppla_aba_partial = partial(PPLAItemChapeu, x_axis=141, y_axis=BOTTOM_MARGIN)
+ppla_aba_partial = partial(PPLAItemChapeu, x_axis=110, y_axis=BOTTOM_MARGIN)
 ppla_lote_partial = partial(PPLAItemChapeu, x_axis=125, y_axis=97)
 ppla_qtd_partial = partial(PPLAItemChapeu, x_axis=66, y_axis=50)
 
@@ -44,7 +44,7 @@ class PPLALabelChapeu:
         self.items: list[PPLAItem] = [
             ppla_cor_partial(text=remove_acentos(label1.cor)),
             ppla_tamanho_partial(text=label1.tamanho),
-            ppla_aba_partial(text=label1.aba),
+            ppla_aba_partial(text=f'Aba {label1.aba}'),
             ppla_lote_partial(text=label1.lote),
             ppla_qtd_partial(text=f'{label1.qtd} un'),
         ]
@@ -53,11 +53,11 @@ class PPLALabelChapeu:
             return
 
         self.items.extend([
-            self.adjust_partial(ppla_cor_partial)(text=remove_acentos(label1.cor)),
-            self.adjust_partial(ppla_tamanho_partial)(text=label1.tamanho),
-            self.adjust_partial(ppla_aba_partial)(text=label1.aba),
-            self.adjust_partial(ppla_lote_partial)(text=label1.lote),
-            self.adjust_partial(ppla_qtd_partial)(text=f'{label1.qtd} un'),
+            self.adjust_partial(ppla_cor_partial)(text=remove_acentos(label2.cor)),
+            self.adjust_partial(ppla_tamanho_partial)(text=label2.tamanho),
+            self.adjust_partial(ppla_aba_partial)(text=f'Aba {label2.aba}'),
+            self.adjust_partial(ppla_lote_partial)(text=label2.lote),
+            self.adjust_partial(ppla_qtd_partial)(text=f'{label2.qtd} un'),
         ])
 
     @staticmethod
