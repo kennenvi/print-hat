@@ -9,6 +9,7 @@ from dataclasses import asdict
 
 
 T = TypeVar('T', bound=tk.Widget)
+QTD_MAXIMO_ETIQUETAS = 100_000
 
 class Application:
     font = ("Calibri", 10)
@@ -80,13 +81,18 @@ class Application:
     def print_label(self) -> None:
         tree_items = self.tree_table.get_children()
         row_values = [self.tree_table.item(item_id, 'values') for item_id in tree_items]
+        qtd = self.input_qtd.get()
         qtd_pilha = self.input_qtd_pilha.get()
         printer = self.combo_printer.get()
-        print('row_values', row_values)
+        # print('row_values', row_values)
 
         if not row_values:
             messagebox.showinfo('Erro', 'É necessário inserir pelo menos um item')
             return
+        if int(qtd) > 100_000:
+            messagebox.showinfo('Erro', 'Número máximo de etiquetas é 100.000')
+            return
+
         PrintHatService.print_labels(row_values, qtd_pilha, printer)
 
     def add_label_to_table(self) -> None:
@@ -97,6 +103,9 @@ class Application:
         except ValueError:
             messagebox.showerror('Erro', f'"Quantidade" precisa ser um número e não: "{qtd}"')
             return
+        if int(qtd) > QTD_MAXIMO_ETIQUETAS:
+            messagebox.showerror('Erro', f'Número máximo de etiquetas é {QTD_MAXIMO_ETIQUETAS}')
+            return
         qtd_pilha = self.input_qtd_pilha.get()
         try:
             int(qtd_pilha)
@@ -105,11 +114,11 @@ class Application:
             return
 
         values = [w_input.get() for w_input in self.input_widgets]
-        print(values)
+        # print(values)
         values.append(qtd_pilha)
         labels = PrintHatService.calculate_mods(*values)
         values_calculated = [asdict(l) for l in labels]
-        print(values_calculated)
+        # print(values_calculated)
 
         if not all(values):
             messagebox.showinfo('Erro', 'É necessário preencheer todos os campos')
@@ -133,16 +142,26 @@ class Application:
         tree.configure(yscroll=scrollbar.set) # type: ignore
         scrollbar.grid(row=2, column=1, sticky='ns')
 
+        div_button_table = tk.Frame(parent)
+        div_button_table.grid(row=3, column=0, sticky="w", pady=10, padx=10)
         delete_button = tk.Button(
-            parent, text="Excluir Etiqueta", font=self.font, padx=10,
+            div_button_table, text="Excluir Etiqueta", font=self.font, padx=10,
             command=partial(self.delete_label_from_table, tree)
         )
-        delete_button.grid(row=3, column=0, sticky="w", pady=10, padx=10)
+        delete_button.grid(row=0, column=0, pady=10, padx=10)
+        clear_all_button = tk.Button(
+            div_button_table, text="Limpar Seleção", font=self.font, padx=10,
+            command=self.clean_table
+        )
+        clear_all_button.grid(row=0, column=1, pady=10, padx=10)
 
         print_button = tk.Button(parent, text="Imprimir", font=self.font, padx=10, command=self.print_label)
         print_button.grid(row=3, column=0, sticky="e", pady=10, padx=10)
 
         return tree
+
+    def clean_table(self) -> None:
+        self.tree_table.delete(*self.tree_table.get_children())
 
     def delete_label_from_table(self, tree: ttk.Treeview) -> None:
         selected = tree.selection()

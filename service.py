@@ -9,10 +9,10 @@ class PrintHatService():
     def print_labels(labels: list, qtd_pilha, printer) -> None:
         labels_label = [Label(*label) for label in labels]
         organized_labels = PrintHatService._organize_labels(labels_label)
-        print('org', organized_labels)
+        # print('org', organized_labels)
         ppla_items = PrintHatService._build_ppla_items(organized_labels)
-        print('ppla_items len', len(ppla_items))
-        print('ppla_items', ppla_items)
+        # print('ppla_items len', len(ppla_items))
+        # print('ppla_items', ppla_items)
 
         PrinterService.print_labels(ppla_items, printer)
 
@@ -22,13 +22,13 @@ class PrintHatService():
         qtd_pilha = int(qtd_pilha)
         qtd = int(label.qtd)
         qtd_pilha = int(qtd_pilha)
-        print(f'qtd inicial == {qtd}')
+        # print(f'qtd inicial == {qtd}')
         label.qtd = str(qtd_pilha)
-        print(f'qtd inicial == {qtd}')
+        # print(f'qtd inicial == {qtd}')
 
         quocient, reminder = divmod(qtd, qtd_pilha)
-        print('quociente', quocient)
-        print('reminder', reminder)
+        # print('quociente', quocient)
+        # print('reminder', reminder)
 
         labels: list[Label] = []
         for _ in range(quocient):
