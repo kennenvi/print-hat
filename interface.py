@@ -142,16 +142,26 @@ class Application:
         tree.configure(yscroll=scrollbar.set) # type: ignore
         scrollbar.grid(row=2, column=1, sticky='ns')
 
+        div_button_table = tk.Frame(parent)
+        div_button_table.grid(row=3, column=0, sticky="w", pady=10, padx=10)
         delete_button = tk.Button(
-            parent, text="Excluir Etiqueta", font=self.font, padx=10,
+            div_button_table, text="Excluir Etiqueta", font=self.font, padx=10,
             command=partial(self.delete_label_from_table, tree)
         )
-        delete_button.grid(row=3, column=0, sticky="w", pady=10, padx=10)
+        delete_button.grid(row=0, column=0, pady=10, padx=10)
+        clear_all_button = tk.Button(
+            div_button_table, text="Limpar Seleção", font=self.font, padx=10,
+            command=self.clean_table
+        )
+        clear_all_button.grid(row=0, column=1, pady=10, padx=10)
 
         print_button = tk.Button(parent, text="Imprimir", font=self.font, padx=10, command=self.print_label)
         print_button.grid(row=3, column=0, sticky="e", pady=10, padx=10)
 
         return tree
+
+    def clean_table(self) -> None:
+        self.tree_table.delete(*self.tree_table.get_children())
 
     def delete_label_from_table(self, tree: ttk.Treeview) -> None:
         selected = tree.selection()
