@@ -82,7 +82,7 @@ class Application:
         row_values = [self.tree_table.item(item_id, 'values') for item_id in tree_items]
         qtd_pilha = self.input_qtd_pilha.get()
         printer = self.combo_printer.get()
-        print('row_values', row_values)
+        # print('row_values', row_values)
 
         if not row_values:
             messagebox.showinfo('Erro', 'É necessário inserir pelo menos um item')
@@ -105,11 +105,11 @@ class Application:
             return
 
         values = [w_input.get() for w_input in self.input_widgets]
-        print(values)
+        # print(values)
         values.append(qtd_pilha)
         labels = PrintHatService.calculate_mods(*values)
         values_calculated = [asdict(l) for l in labels]
-        print(values_calculated)
+        # print(values_calculated)
 
         if not all(values):
             messagebox.showinfo('Erro', 'É necessário preencheer todos os campos')
