@@ -9,6 +9,7 @@ from dataclasses import asdict
 
 
 T = TypeVar('T', bound=tk.Widget)
+QTD_MAXIMO_ETIQUETAS = 100_000
 
 class Application:
     font = ("Calibri", 10)
@@ -80,6 +81,7 @@ class Application:
     def print_label(self) -> None:
         tree_items = self.tree_table.get_children()
         row_values = [self.tree_table.item(item_id, 'values') for item_id in tree_items]
+        qtd = self.input_qtd.get()
         qtd_pilha = self.input_qtd_pilha.get()
         printer = self.combo_printer.get()
         # print('row_values', row_values)
@@ -87,6 +89,10 @@ class Application:
         if not row_values:
             messagebox.showinfo('Erro', 'É necessário inserir pelo menos um item')
             return
+        if int(qtd) > 100_000:
+            messagebox.showinfo('Erro', 'Número máximo de etiquetas é 100.000')
+            return
+
         PrintHatService.print_labels(row_values, qtd_pilha, printer)
 
     def add_label_to_table(self) -> None:
@@ -96,6 +102,9 @@ class Application:
             int(qtd)
         except ValueError:
             messagebox.showerror('Erro', f'"Quantidade" precisa ser um número e não: "{qtd}"')
+            return
+        if int(qtd) > QTD_MAXIMO_ETIQUETAS:
+            messagebox.showerror('Erro', f'Número máximo de etiquetas é {QTD_MAXIMO_ETIQUETAS}')
             return
         qtd_pilha = self.input_qtd_pilha.get()
         try:
